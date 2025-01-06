@@ -1,0 +1,13 @@
+# Ignorar el entorno virtual
+venv/
+
+# Ignorar credenciales
+.streamlit/secrets.toml
+
+# Ignorar caché de Python
+__pycache__/
+*.py[cod]
+
+# Ignorar configuraciones de IDE
+.vscode/
+.idea/
