@@ -4,6 +4,7 @@ from google.oauth2.service_account import Credentials
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
+import pytz
 
 st.set_page_config(
     page_title='Registro Presión',
@@ -45,7 +46,10 @@ with tab1:
     with col3:
         pulso = st.number_input("Pulsaciones", min_value=0, step=1, format="%d", key='pulso_input')
 
-    hora = datetime.now().strftime("%H:%M")
+    hora_utc = datetime.utcnow()
+    zona_horaria = pytz.timezone('America/Santiago')
+    hora_local = hora_utc.astimezone(zona_horaria)
+    hora_formateada = hora_local.strftime("%H:%M")
 
     # Botón registrar
     if st.button("Registrar", key="registrar_button"):
@@ -55,7 +59,7 @@ with tab1:
         if not fecha_formateada or alta == 0 or baja == 0 or pulso == 0:
             st.error("Todos los valores son obligatorios. Por favor, complete todos los campos.")
         else:
-            data = [str(fecha_formateada), hora, alta, baja, pulso]
+            data = [str(fecha_formateada), hora_formateada, alta, baja, pulso]
             sheet.append_row(data)
             st.success("Datos registrados correctamente")
 
