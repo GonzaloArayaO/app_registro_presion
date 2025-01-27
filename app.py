@@ -67,12 +67,14 @@ with tab2:
     df = obtener_datos()
     df['Fecha'] = df['Fecha'].dt.strftime('%d-%m-%Y')
     if not df.empty:
+        # Agrupar por fecha y calcular el promedio de columnas numéricas
+        df_avg = df.groupby('Fecha', as_index=False)[['Alta', 'Baja', 'Pulso']].mean()
 
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(
-            x=df['Fecha'],
-            y=df['Alta'],
+            x=df_avg['Fecha'],
+            y=df_avg['Alta'],
             mode='lines+markers',
             name='Alta',
             line=dict(color='#228B22', width=2),
@@ -80,8 +82,8 @@ with tab2:
         ))
 
         fig.add_trace(go.Scatter(
-            x=df['Fecha'],
-            y=df['Baja'],
+            x=df_avg['Fecha'],
+            y=df_avg['Baja'],
             mode='lines+markers',
             name='Baja',
             line=dict(color='#FF8C00', width=2),
@@ -89,8 +91,8 @@ with tab2:
         ))
 
         fig.add_trace(go.Scatter(
-            x=df['Fecha'],
-            y=df['Pulso'],
+            x=df_avg['Fecha'],
+            y=df_avg['Pulso'],
             mode='lines+markers',
             name='Pulso',
             line=dict(color='#1E90FF', width=2),
@@ -98,22 +100,22 @@ with tab2:
         ))
 
         fig.update_layout(
-            title="Variación de Presión Alta, Baja y Pulsaciones",
+            title="Promedio diario de Presión Alta, Baja y Pulsaciones",
             xaxis=dict(
                 titlefont=dict(color="black"),
                 tickfont=dict(color="black"),
                 tickangle=270
             ),
             yaxis=dict(
-                title="Valores",
+                title="Valores Promedio",
                 titlefont=dict(color="black"),
                 tickfont=dict(color="black"),
                 rangemode='tozero'
             ),
             legend_title=dict(
-                text="Variables",
+                text="Variables (promedio)",
                 font=dict(color="black")
-            ),    
+            ),
             template="plotly_white"
         )
 
