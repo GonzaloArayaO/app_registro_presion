@@ -74,6 +74,8 @@ with tab2:
         # Agrupar por fecha y calcular el promedio de columnas numéricas
         df_avg = df.groupby('Fecha', as_index=False)[['Alta', 'Baja', 'Pulso']].mean()
 
+        df_avg = df_avg.sort_values(by='Fecha')
+
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(
